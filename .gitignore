@@ -29,3 +29,6 @@ $RECYCLE.BIN/
 
 # Certificate
 build/server.crt
+
+# Deploy artifects
+deploy_prod

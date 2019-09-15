@@ -35,13 +35,13 @@ workflows:
   validate:
     jobs:
       # USE BUILD if is possible to enable scratch org!
+      # - build:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - master
       - deploy-prod:
-          filters:
-            branches:
-              ignore:
-                - master
-      - deploy-prod:
-          filters:
-            branches:
-              only:
-                - master
+          # filters:
+          #   branches:
+          #     only:
+          #       - master

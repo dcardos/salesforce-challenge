@@ -1,0 +1,31 @@
+<template>
+    <lightning-card title="Unbabel challenge" icon-name="custom:custom67">
+        <div class="slds-m-around_medium">
+            <!-- Input -->
+            <div class="slds-m-bottom_small">
+                <lightning-input label="Text to translate"></lightning-input>
+            </div>
+
+            <div class="slds-grid slds-gutters slds-m-around_medium">
+                <div class="slds-col slds-size_2-of-3">
+                    <!-- Picklist -->
+                    <lightning-combobox name="targetLanguage" label="Translate to" value={targetLang}
+                        placeholder="Select a language" options={options} onchange={handleChange}>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col slds-align-bottom">
+                    <!-- Buttom -->
+                    <lightning-button variant="brand" label="Submit" title="Submit" onclick={handleClick}
+                        class="slds-m-left_x-small slds-float--right">
+                    </lightning-button>
+                </div>
+            </div>
+
+            <div style="height: 300px;">
+                <!-- Table -->
+                <lightning-datatable key-field="id" data={translations} columns={columns}>
+                </lightning-datatable>
+            </div>
+        </div>
+    </lightning-card>
+</template>

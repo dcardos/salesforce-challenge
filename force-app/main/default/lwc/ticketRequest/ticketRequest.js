@@ -26,4 +26,8 @@ export default class App extends LightningElement {
     handleChange(event) {
         this.targetLang = event.detail.value;
     }
+
+    handleSubmit() {
+        
+    }
 }

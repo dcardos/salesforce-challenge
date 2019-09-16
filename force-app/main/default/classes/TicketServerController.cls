@@ -22,8 +22,11 @@ public with sharing class TicketServerController {
                 languages.add(new PicklistItem(entry.getLabel(), entry.getValue()));
             }
         }
-        System.debug(languages.size());
-        System.debug(languages);
         return languages;
+    }
+
+    @AuraEnabled
+    public static Boolean requestTranslation(String originalText, String toLang) {
+        
     }
 }

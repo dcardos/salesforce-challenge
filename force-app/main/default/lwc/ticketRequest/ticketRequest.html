@@ -3,14 +3,14 @@
         <div class="slds-m-around_medium">
             <!-- Input -->
             <div class="slds-m-bottom_small">
-                <lightning-input label="Text to translate"></lightning-input>
+                <lightning-input label="Text to translate" value={originalText} onchange={handleTextChange}></lightning-input>
             </div>
 
             <div class="slds-grid slds-gutters slds-m-around_medium">
                 <div class="slds-col slds-size_2-of-3">
                     <!-- Picklist -->
                     <lightning-combobox name="targetLanguage" label="Translate to" value={targetLang}
-                        placeholder="Select a language" options={options} onchange={handleChange}>
+                        placeholder="Select a language" options={options} onchange={handleLangChange}>
                     </lightning-combobox>
                 </div>
                 <div class="slds-col slds-align-bottom">
@@ -20,6 +20,10 @@
                     </lightning-button>
                 </div>
             </div>
+
+            <template if:true={error}>
+                <c-error-panel errors={error}></c-error-panel>
+            </template>
 
             <div style="height: 300px;">
                 <!-- Table -->

@@ -5,6 +5,12 @@
         "paths": {
             "c/ticketRequest": [
                 "ticketRequest/ticketRequest.js"
+            ],
+            "c/errorPanel": [
+                "errorPanel/errorPanel.js"
+            ],
+            "c/ldsUtils": [
+                "ldsUtils/ldsUtils.js"
             ]
         }
     },

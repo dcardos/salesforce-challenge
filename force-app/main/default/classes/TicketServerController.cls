@@ -38,10 +38,7 @@ public with sharing class TicketServerController {
     }
 
     @AuraEnabled
-    public static Boolean requestTranslation(String originalText, String toLang) {
-        System.debug(originalText);
-        System.debug(toLang);
+    public static void requestTranslation(String originalText, String toLang) {
         TranslationRequest.sendRequest(originalText, toLang);
-        return true;
     }
 }

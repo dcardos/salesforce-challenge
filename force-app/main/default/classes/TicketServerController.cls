@@ -1,5 +1,6 @@
 public with sharing class TicketServerController {
 
+    @TestVisible
     class PicklistItem {
         @AuraEnabled
         public String label {get;set;}

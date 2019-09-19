@@ -29,13 +29,40 @@ public with sharing class TicketServerController {
         return languages;
     }
 
+    @AuraEnabled(cacheable=true)
+    public static Integer getTotalTrans() {
+        return [SELECT count() FROM Translation__c];
+    }
+
     @AuraEnabled
-    public static List<Translation__c> getTranslations() {
-        return [
-            SELECT Id, From_Language__c, Original_Text__c, To_Language__c, Translated_Text__c, Status__c, Error_Message__c
-            FROM Translation__c
-            ORDER BY CreatedDate DESC
-        ];
+    public static List<Translation__c> getTranslations(Integer numRecords, Datetime dateFilter, Boolean older) {
+        if (dateFilter == null) {
+            dateFilter = System.now();
+        }
+        if (older == null || older) {
+            return [
+                SELECT Id, From_Language__c, Original_Text__c, To_Language__c, Translated_Text__c, Status__c, Error_Message__c, CreatedDate
+                FROM Translation__c
+                WHERE CreatedDate < :dateFilter
+                ORDER BY CreatedDate DESC
+                LIMIT :numRecords
+            ];
+        } else {
+            List<Translation__c> translationsInversed = [
+                SELECT Id, From_Language__c, Original_Text__c, To_Language__c, Translated_Text__c, Status__c, Error_Message__c, CreatedDate
+                FROM Translation__c
+                WHERE CreatedDate > :dateFilter
+                ORDER BY CreatedDate ASC
+                LIMIT :numRecords
+            ];
+            // Sorting CreatedDate Desc so it is consistent
+            List<Translation__c> translationReversed = new List<Translation__c>();
+            for (Integer i = translationsInversed.size()-1; i >= 0; i--) {
+                translationReversed.add(translationsInversed[i]);
+            }
+            return translationReversed;
+        }
+        
     }
 
     @AuraEnabled

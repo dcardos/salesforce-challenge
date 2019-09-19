@@ -40,12 +40,6 @@ public with sharing class TranslationRequest {
             throw new TranslationException('Cannot translate from ' + originalLanguage + ' to ' + toLang);
         }
 
-        // Setting translation up
-        Translation__c translation = new Translation__c(
-            Original_Text__c = originalText
-        );
-        insert translation;
-
         // Making request
         unbabelapi__Unbabel_Translation_Request__c trRequest = new unbabelapi__Unbabel_Translation_Request__c();
         trRequest.unbabelapi__Unbabel_From_Language__c = originalLanguage;
@@ -53,6 +47,13 @@ public with sharing class TranslationRequest {
         trRequest.unbabelapi__Unbabel_Translation_Type__c = 'Machine';
         trRequest.unbabelapi__Unbabel_Namespace__c = '';
         trRequest.unbabelapi__Unbabel_Class__c = AppTranslationHandler.class.getName();
+        insert trRequest;
+        // Setting translation up
+        Translation__c translation = new Translation__c(
+            Original_Text__c = originalText,
+            Translation_Request__c = trRequest.Id
+        );
+        insert translation;
         
         Set<String> translatedFields = new Set<String>{'Original_Text__c'};
         //Request Translation to Unbabel
@@ -74,11 +75,10 @@ public with sharing class TranslationRequest {
             trRequest.unbabelapi__Unbabel_Status__c = 'Request Error';
             trRequest.unbabelapi__Unbabel_Error_Log__c = ure.message;
             translation.Error_Message__c = ure.message;
+            update translation;
         }
         
-        insert trRequest;
-        translation.Translation_Request__c = trRequest.id;
-        update translation;
+        update trRequest;
     }
     
 }

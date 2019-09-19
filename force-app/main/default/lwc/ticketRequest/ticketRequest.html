@@ -37,12 +37,16 @@
                     </template>
                 </div>
                 <div class="slds-col slds-size_2-of-3">
-                    <div style="height: 300px;">
+                    <div style="height: 250px;">
                         <!-- Table -->
                         <lightning-datatable key-field="id" data={translations} columns={columns}>
                         </lightning-datatable>
                     </div>
+                    <lightning-button label="<  Newer translations" title="Load newer data" onclick={handleNewerTrans}></lightning-button>
+                    <lightning-button label="Older translations  >" title="Load older data" onclick={handleOlderTrans} class="slds-float--right"></lightning-button>
                 </div>
+                
+
             </div>
         </div>
     </lightning-card>

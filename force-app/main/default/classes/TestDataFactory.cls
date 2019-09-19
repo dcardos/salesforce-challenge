@@ -15,18 +15,19 @@ public class TestDataFactory {
     }
 
     @TestVisible
-    private static Translation__c getTranslation(String originalText) {
+    private static Translation__c getTranslation(String originalText, Id trId) {
         Translation__c translation = new Translation__c(
-            Original_Text__c = originalText
+            Original_Text__c = originalText,
+            Translation_Request__c = trId
         );
         return  translation;
     }
 
     @TestVisible
-    private static List<Translation__c> getTranslationList(String originalText, Integer size) {
+    private static List<Translation__c> getTranslationList(String originalText, Id trId, Integer size) {
         List<Translation__c> translationList = new List<Translation__c>();
         for (Integer i = 0; i < size; i++) {
-            translationList.add(getTranslation(originalText));
+            translationList.add(getTranslation(originalText, trId));
         }
         return  translationList;
     }

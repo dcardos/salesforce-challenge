@@ -2,10 +2,12 @@
 private class AppTranslationHandlerTest {
     @isTest
     static void AppTranslationHandlerTestOK() {
-        Translation__c translation = TestDataFactory.getTranslation('Hello World');
-        insert translation;
-
-        unbabelapi__Unbabel_Translation_Request__c tr = TestDataFactory.getTranslationRequest(translation.Id);
+        unbabelapi__Unbabel_Translation_Request__c tr = TestDataFactory.getTranslationRequest(null);
+        insert tr;
+        Translation__c translation = TestDataFactory.getTranslation('Hello World', tr.Id);
+        insert translation;        
+        tr.unbabelapi__Unbabel_sObject_Id__c = translation.id;
+        update tr;
         
         Map<String, String> dataNoObj = new Map<String, String>{'Id' => translation.Id, 'content' => 'Olá Mundo'};
         unbabelapi.UnbabelRestEnvelope env = new unbabelapi.UnbabelRestEnvelope(true, null, dataNoObj);

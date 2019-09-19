@@ -1,0 +1,53 @@
+<template>
+    <lightning-card title="Unbabel challenge" icon-name="custom:custom67">
+        <div class="slds-m-around_medium">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-size_1-of-3">
+                    <!-- Spinner if loading -->
+                    <template if:true={loading}>
+                        <lightning-spinner alternative-text="Loading"></lightning-spinner>
+                    </template>
+                    <template if:false={loading}>
+                        <!-- Input -->
+                        <div class="slds-m-bottom_small">
+                            <lightning-input label="Text to translate" value={originalText} onchange={handleTextChange} 
+                            required message-when-value-missing="Please, type the text to be translated">
+                            </lightning-input>
+                        </div>
+                        
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_2-of-3">
+                                <!-- Picklist -->
+                                <lightning-combobox name="targetLanguage" label="Translate to" value={targetLang}
+                                    placeholder="Select a language" options={options} onchange={handleLangChange} 
+                                    required message-when-value-missing="Please, select a target language">
+                                </lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-align-bottom">
+                                <!-- Buttom -->
+                                <lightning-button type="submit" variant="brand" label="Submit" title="Submit" onclick={handleSubmit}
+                                    class="slds-m-left_x-small slds-float--right">
+                                </lightning-button>
+                            </div>
+                        </div>
+                        
+                        <template if:true={error}>
+                            <c-error-panel errors={error}></c-error-panel>
+                        </template>
+                    </template>
+                </div>
+                <div class="slds-col slds-size_2-of-3">
+                    <div style="height: 250px;">
+                        <!-- Table -->
+                        <lightning-datatable key-field="id" data={translations} columns={columns}>
+                        </lightning-datatable>
+                    </div>
+                    <lightning-button label="<  Newer translations" title="Load newer data" onclick={handleNewerTrans}></lightning-button>
+                    <lightning-button label="Older translations  >" title="Load older data" onclick={handleOlderTrans} class="slds-float--right"></lightning-button>
+                </div>
+                
+
+            </div>
+        </div>
+    </lightning-card>
+</template>

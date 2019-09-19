@@ -71,7 +71,10 @@ export default class App extends LightningElement {
                         this.firstRecPos += result.length;
                         this.LastRecPos += result.length;
                     }
-                }
+                } else {
+                    this.firstRecPos = 0;
+                    this.LastRecPos = numTranslations - 1;
+                } 
                 this.translations = result;
             })
             .catch(error => {
@@ -122,6 +125,7 @@ export default class App extends LightningElement {
                 .then(() => {
                     this.error = undefined;
                     this.refreshTable(this.lastRecordDateTime);
+                    // TODO: add 1 on total trans!
                 })
                 .catch(error => {
                     console.error(error);

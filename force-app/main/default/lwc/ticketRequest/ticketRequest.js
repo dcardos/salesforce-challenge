@@ -14,6 +14,7 @@ const columns = [
 ];
 
 export default class App extends LightningElement {
+    @track loading = true;
     @track targetLang;
     @track columns = columns;
     @track error;
@@ -25,20 +26,24 @@ export default class App extends LightningElement {
     @wire(getSupportedLangs)
     supportedLangs;
 
-    @wire(getTranslations)
-    wiredAccounts(result) {
-        this.wiredTranslationsResult = result;
-        if (result.data) {
-            this.translations = result.data;
-            this.error = undefined;
-        } else if (result.error) {
-            this.error = result.error;
-            this.translations = undefined;
-        }
-    }
-
     get options() {
         return this.supportedLangs.data;
+    }
+
+    refreshTable = () => {
+        this.loading = true;
+        getTranslations()
+            .then(result => {
+                this.translations = result;
+                this.error = undefined;
+            })
+            .catch(error => {
+                this.error = error;
+                this.translations = undefined;
+            })
+            .finally(() => {
+                this.loading = false;
+            });
     }
 
     connectedCallback() {
@@ -47,7 +52,7 @@ export default class App extends LightningElement {
         const messageCallback = function (response) {
             console.log('New message received : ', JSON.stringify(response));
             // Response contains the payload of the new message received
-            return refreshApex(this.wiredTranslationsResult);
+            this.refreshTable();
         };
 
         // Invoke subscribe method of empApi. Pass reference to messageCallback
@@ -56,6 +61,9 @@ export default class App extends LightningElement {
             console.log('Successfully subscribed to : ', JSON.stringify(response.channel));
             this.subscription = response;
         });
+
+        // initializing table
+        this.refreshTable();
     }
 
     handleTextChange(event) {
@@ -67,16 +75,29 @@ export default class App extends LightningElement {
     }
 
     handleSubmit() {
-        requestTranslation({ originalText: this.originalText, toLang: this.targetLang })
-            .then(result => {
-                console.log(result);
-                this.error = undefined;
-                return refreshApex(this.wiredTranslationsResult);
-            })
-            .catch(error => {
-                console.log(error);
-                this.error = error;
-            });
+        const allValid = [...this.template.querySelectorAll('lightning-input')]
+            .reduce((validSoFar, inputCmp) => {
+                inputCmp.reportValidity();
+                return validSoFar && inputCmp.checkValidity();
+            }, true);
+        if (allValid && this.targetLang) {
+            this.loading = true;
+            requestTranslation({ originalText: this.originalText, toLang: this.targetLang })
+                .then(() => {
+                    this.error = undefined;
+                    this.refreshTable();
+                })
+                .catch(error => {
+                    console.error(error);
+                    this.error = error;
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        } else if (!this.targetLang) {
+            let picklistCmp = this.template.querySelector('lightning-combobox');
+            picklistCmp.reportValidity();
+        }
     }
 
     disconnectedCallback() {

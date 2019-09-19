@@ -29,7 +29,7 @@ public with sharing class TicketServerController {
         return languages;
     }
 
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static List<Translation__c> getTranslations() {
         return [
             SELECT Id, From_Language__c, Original_Text__c, To_Language__c, Translated_Text__c, Status__c, Error_Message__c

@@ -3,9 +3,9 @@ import { reduceErrors } from 'c/ldsUtils';
 
 export default class ErrorPanel extends LightningElement {
     /** Generic / user-friendly message */
-    @api friendlyMessage = 'Error retrieving data';
+    @api friendlyMessage = 'We could not process the translation';
 
-    @track viewDetails = false;
+    @track viewDetails = true;
 
     /** Single or array of LDS errors */
     @api errors;

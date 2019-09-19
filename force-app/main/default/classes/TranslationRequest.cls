@@ -10,7 +10,7 @@ public with sharing class TranslationRequest {
         if (String.isBlank(originalText)) {
             throw new ParamsException('There is no text to be translated');
         } else if (String.isBlank(toLang)) {
-            throw new ParamsException('There is target language for the translation');
+            throw new ParamsException('There is no target language for the translation');
         }
 
         String originalLanguage;

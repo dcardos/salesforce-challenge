@@ -38,7 +38,7 @@ private class TranslationRequestTest {
         try {
             TranslationRequest.sendRequest('I am here now', null);
         } catch (TranslationRequest.ParamsException ex) {
-            System.assertEquals('There is target language for the translation', ex.getMessage());
+            System.assertEquals('There is no target language for the translation', ex.getMessage());
         }
     }
 }

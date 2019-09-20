@@ -13,7 +13,7 @@ const columns = [
     { label: 'Status', fieldName: 'Status__c' }
 ];
 
-const numTranslations = 7; // number of records to be returned for the table
+const numTranslations = 10; // number of records to be returned for the table
 
 export default class App extends LightningElement {
     @track loading = true;
